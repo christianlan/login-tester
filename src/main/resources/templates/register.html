@@ -35,9 +35,11 @@
 					th:field="*{password}" name="password" />
 			</div>
 
-			<!-- 		        <label for="inputRepeatPassword" class="sr-only">Repeat Password</label> -->
-			<!-- 		        <input type="password" class="form-control" placeholder="Repeat Password" name="password2" /> -->
-
+			<div class="margin10">
+		        <label for="inputRepeatPassword" class="sr-only">Repeat Password</label>
+		        <input type="password" class="form-control" placeholder="Repeat Password" name="password2" />
+			</div>
+			
 			<div class="input-group mb-3 margin10">
 				<label for="input2FA" class="checkboxtext">Use Two Step
 					Authentication (Google Authenticator)&nbsp;&nbsp;&nbsp;</label> <span
@@ -46,6 +48,8 @@
 				</span>
 				</span>
 			</div>
+			
+			<div th:if="${message != null}" class="alert alert-info" role="alert"><span th:text="${message}"></span></div>
 
 			<button class="btn btn-lg btn-primary btn-block" type="submit">
 				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
