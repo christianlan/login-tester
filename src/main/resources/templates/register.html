@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<title>Backend Ninja - Sign on</title>
+
+<!-- plugins js -->
+<!-- 		<script src='https://www.google.com/recaptcha/api.js'></script> -->
+<!-- 		<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> -->
+
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+<!-- Custom styles for this template -->
+<link th:href="@{/css/login.css}" rel="stylesheet" />
+<link th:href="@{/css/style.css}" rel="stylesheet" />
+</head>
+
+<body>
+	<div class="container">
+
+		<form class="form-signin" th:action="@{/register/registerConfirmation}" th:object="${user}" method="POST">
+			<h2 class="form-signin-heading">Sign on</h2>
+
+			<div class="margin10">
+				<label for="inputUsername" class="sr-only">Username</label> <input
+					type="text" class="form-control" placeholder="Username"
+					th:field="*{username}" />
+			</div>
+
+			<div class="margin10">
+				<label for="inputPassword" class="sr-only">Password</label> <input
+					type="password" class="form-control" placeholder="Password"
+					th:field="*{password}" name="password" />
+			</div>
+
+			<!-- 		        <label for="inputRepeatPassword" class="sr-only">Repeat Password</label> -->
+			<!-- 		        <input type="password" class="form-control" placeholder="Repeat Password" name="password2" /> -->
+
+			<div class="input-group mb-3 margin10">
+				<label for="input2FA" class="checkboxtext">Use Two Step
+					Authentication (Google Authenticator)&nbsp;&nbsp;&nbsp;</label> <span
+					class="input-group-prepend bg-info"> <span
+					class="input-group-text"> <input type="checkbox" th:field="*{use2fa}">
+				</span>
+				</span>
+			</div>
+
+			<button class="btn btn-lg btn-primary btn-block" type="submit">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+				Register
+			</button>
+		</form>
+			
+		<a th:href="@{/login}" style="text-decoration: none">
+        	<button class="btn btn-lg btn-info btn-block" style="margin-top: 50px">Go to login</button>
+        </a>
+	</div>
+</body>
+</html>
