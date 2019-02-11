@@ -18,7 +18,7 @@
     <div class="container">
 	  <p style="text-align: right; font-weight: bold" th:if="${authUser}"><span th:text="${authUser.getUsername()}"></span></p>
 	  
-      <form th:if="${usercheck_flag}" class="form-signin" th:action="@{/login/usercheck}" method="POST">
+      <form th:if="${usercheck_flag}" class="form-signin" th:action="@{/login/credentialscheck}" method="POST">
         <h2 class="form-signin-heading">Sign in</h2>
 
 		<div>
@@ -26,6 +26,11 @@
 	        <input type="text" class="form-control" placeholder="Username" name="username"/>
         </div>
 		
+		<div>
+	        <label for="inputPassword" class="sr-only">Password</label>
+	        <input type="password" class="form-control" placeholder="Password" name="password"/>
+        </div>
+        
 		<div th:if="${error != null}" class="alert alert-danger" role="alert">Invalid username or password, or code (if it's the case)</div>
         <div th:if="${logout != null}" class="alert alert-info" role="alert">Logout successfully</div>
         <div th:if="${new_user != null}" class="alert alert-info" role="alert"><span th:text="${new_user}"></span> registered successfully</div>
@@ -45,7 +50,8 @@
         
 		<div>
 	        <label for="inputPassword" class="sr-only">Password</label>
-	        <input type="password" class="form-control" placeholder="Password" name="password"/>
+	        <input type="password" class="form-control" placeholder="Password" name="password"
+	        	   th:readonly="${true}" th:value="*{given_password}"/>
         </div>
         
         <div th:if="${code_flag}">
