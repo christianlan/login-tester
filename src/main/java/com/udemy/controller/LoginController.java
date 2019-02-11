@@ -1,5 +1,7 @@
 package com.udemy.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.udemy.constant.ViewConstant;
@@ -39,10 +42,27 @@ public class LoginController {
 		model.addAttribute("new_user", new_user);
 		model.addAttribute("message", message);
 		
+		model.addAttribute("usercheck_flag", true);
 		model.addAttribute("authUser", this.getUser());
 		
 		LOG.info("---------------GO TO LOGIN PAGE");
 		return ViewConstant.LOGIN;
+	}
+	
+	@PostMapping("/login/usercheck")
+	public String userCheck(HttpServletRequest request, Model model) {
+		String given_username = request.getParameter("username");
+		LOG.info("Checking the introduced user: " + given_username);
+		
+		User user = userRepository.findByUsername(given_username);
+		if (user == null) {
+			return "redirect:/login?message=" + given_username + " doesn't exist";
+		} else {
+			model.addAttribute("given_username", given_username);
+			model.addAttribute("code_flag", user.isUse2fa());
+			model.addAttribute("usercheck_flag", false);
+			return ViewConstant.LOGIN;
+		}
 	}
 	
 	@GetMapping("/loginsuccess")
@@ -50,17 +70,6 @@ public class LoginController {
 		LOG.info("---------------GO TO CONTACTS PAGE");
 		return "redirect:/contacts/showcontacts";
 	}
-	
-//	@PostMapping("/logincheck")
-//	public String loginCheck(@ModelAttribute(name="userCredentials") UserCredential uc) {
-//		LOG.info("METHOD: loginCheck -- PARAMS: " + uc.toString());
-//		if (uc.getUsername().equals("user") && uc.getPassword().equals("user")) {
-//			LOG.info("Returning to contacts view");
-//			return "redirect:/contacts/showcontacts";
-//		}
-//		LOG.info("Redirect to login?error");
-//		return "redirect:/login?error";
-//	}
 	
 	private User getUser() {
 		User user = null;
