@@ -2,6 +2,7 @@ package com.udemy.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.udemy.component.CustomAuthenticationProvider;
+import com.udemy.component.CustomFilter;
 import com.udemy.component.CustomWebAuthenticationDetailsSource;
 
 @Configuration
@@ -24,11 +26,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
 	private CustomWebAuthenticationDetailsSource cwADS;
-	
-//	@Autowired
-//	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//		auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder());
-//	}
 	
 	public SecurityConfiguration() {
 		super();
@@ -61,4 +58,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
         authProvider.setPasswordEncoder(new BCryptPasswordEncoder());
         return authProvider;
     }
+	
+	@Bean
+	public FilterRegistrationBean<CustomFilter> registerCustomFilter() {
+		FilterRegistrationBean<CustomFilter> registrationBean = new FilterRegistrationBean<>();
+		
+		registrationBean.setFilter(new CustomFilter());
+		registrationBean.addUrlPatterns("/loginsuccess");
+		registrationBean.addUrlPatterns("/logincheck2");
+		
+		return registrationBean;
+	}
 }

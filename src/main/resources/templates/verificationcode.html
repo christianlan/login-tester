@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8"/>
+
+    <title>Backend Ninja - Signin</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+
+  </head>
+
+  <body>
+    <div class="container">
+    	<p style="text-align: right; font-weight: bold" th:if="${authUser}"><span th:text="${authUser.getUsername()}"></span></p>
+    
+    	<form th:action="@{/login/codecheck}" method="POST">
+	    	<label for="inputCode" class="sr-only">Google Authenticator Verification Code</label>
+	        <input type=text class="form-control" placeholder="Code" name="code"/>
+	        
+	        <button class="btn btn-primary" type="submit">Enviar</button>
+	        <span th:if="${error}" class="text-danger" th:text="${error}"></span>
+    	</form>
+    </div>
+  </body>
+</html>	
