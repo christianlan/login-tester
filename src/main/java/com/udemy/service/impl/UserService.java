@@ -31,17 +31,6 @@ public class UserService implements UserDetailsService{
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//		com.udemy.entity.User user2 = new com.udemy.entity.User();
-//		user2.setUsername("user");
-//		user2.setPassword(new BCryptPasswordEncoder().encode("pass"));
-//		user2.setEnabled(true);
-//		
-//		Set<UserRole> roles = new HashSet<UserRole>();
-//		roles.add(new UserRole(1, user2, "role_user"));
-//		user2.setUserRole(roles);
-		// ---------------------------------------------
-		// com.udemy.entity.User user3 = ViewConstant.user;
-		
 		com.udemy.entity.User user = ur.findByUsername(username);
 		List<GrantedAuthority> authorities = buildAuthorities(user.getUserRoles());
 		return buildUser(user, authorities);

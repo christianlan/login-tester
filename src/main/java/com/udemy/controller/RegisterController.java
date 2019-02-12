@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jboss.aerogear.security.otp.api.Base32;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -41,9 +42,6 @@ public class RegisterController {
 	@Autowired
 	private UserRepository ur;
 	
-//	@Autowired
-//	private ICaptchaService captchaService;
-	
 	private static final Log LOG = LogFactory.getLog(RegisterController.class);
 	
 	@GetMapping("/register")
@@ -58,7 +56,7 @@ public class RegisterController {
 	
 	@PostMapping("/registerConfirmation")
 	public String ConfirmRegister(@ModelAttribute("user") User user, HttpServletRequest request, Model model) {
-
+		// The model attribute User contains username, password and use2fa
 		if (checkUsername(user.getUsername())) { // If the username doesn't exist
 			if (user.getPassword().equals(request.getParameter("password2"))) {
 				LOG.info("Register new user: " + user.toString());
@@ -70,6 +68,10 @@ public class RegisterController {
 				roles.add(new UserRole(user, "role_user"));
 				user.setUserRoles(roles);
 				
+				if (user.isUse2fa()) {
+					user.setSecret(Base32.random());
+				}
+				
 				userService2.addUser(user);
 				
 				if (user.isUse2fa()) {
@@ -77,18 +79,13 @@ public class RegisterController {
 						String qrurl = userService.generateQRUrl(user);
 						model.addAttribute("qr", qrurl);
 						model.addAttribute("username", user.getUsername());
-						
-						// return "redirect:/qrcode.html?lang=" + request.getLocale().getLanguage();
-						
+												
 						return ViewConstant.QR_CODE;
 						
 					} catch (UnsupportedEncodingException e) {
-						// model.addAttribute("message", "Encoding not supported, 2fa disabled to the user");
-						// model.addAttribute("new_user", user.getUsername());
 						user.setUse2fa(false); // Forzar que no se use el 2fa				
 						return "redirect:/login?new_user=" + user.getUsername() + "?message=Encoding not supported, 2fa disabled to the user";
 					}
-					//return "redirect:/register/qrcode?username=" + user.getUsername();
 				} else {
 					return "redirect:/login?new_user=" + user.getUsername();
 				}
@@ -104,28 +101,4 @@ public class RegisterController {
 		User user = ur.findByUsername(username);
 		return user==null;
 	}
-	
-	
-//	@GetMapping("/qrcode")
-//	public String showQRcode(@RequestParam("username") String username, Model model) {
-//		User user = userService2.findUserByUsername(username);
-//		try {
-//			String qrurl = userService.generateQRUrl(user);
-//			model.addAttribute("qr", qrurl);
-//			model.addAttribute("new_user", user.getUsername());
-//			
-//			// LOG.info("QR url: " + qrurl);
-//			// return "redirect:/qrcode.html?lang=" + request.getLocale().getLanguage();
-//			
-//			return "qrcode";
-//			
-//		} catch (UnsupportedEncodingException e) {
-//			// model.addAttribute("message", "Encoding not supported, 2fa disabled to the user");
-//			// model.addAttribute("new_user", user.getUsername());
-//			user.setUse2fa(false); // Forzar que no se use el 2fa
-//			
-//			LOG.info("Error encoding in showQRcode method");
-//			return "redirect:/login?new_user=" + username + "?message=Encoding not supported, 2fa disabled to the user";
-//		}
-//	}
 }

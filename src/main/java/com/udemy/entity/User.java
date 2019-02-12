@@ -10,8 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.jboss.aerogear.security.otp.api.Base32;
-
 @Entity
 @Table(name = "users")
 public class User {
@@ -35,29 +33,28 @@ public class User {
 	@Column(name = "secret")
 	private String secret;
 
+	public User() {
+		super();
+	}
+	
 	public User(String username, String password, boolean enabled) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.enabled = enabled;
-		this.secret = Base32.random();
+		this.secret = "";
 		this.use2fa = false;
 	}
-
-	public User(String username, String password, boolean enabled, Set<UserRole> userRoles) {
+	
+	public User(String username, String password, boolean enabled, Set<UserRole> userRoles, boolean use2fa, String secret) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.enabled = enabled;
 		this.userRoles = userRoles;
+		this.use2fa = use2fa;
+		this.secret = secret;
 	}
-	
-	public User() {
-		super();
-		this.secret = Base32.random();
-		this.use2fa = false;
-	}
-
 
 	public boolean isUse2fa() {
 		return use2fa;
