@@ -5,9 +5,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.udemy.constant.ViewConstant;
 import com.udemy.entity.User;
-import com.udemy.repository.UserRepository;
+import com.udemy.service.IAuthenticationFacade;
 
 @Controller
 public class LoginController {
@@ -24,8 +21,7 @@ public class LoginController {
 	private static final Log LOG = LogFactory.getLog(LoginController.class);
 	
 	@Autowired
-	@Qualifier("userRepository")
-	private UserRepository userRepository;
+	private IAuthenticationFacade authenticationFacade;
 	
 	@GetMapping("/login")
 	public String showLoginForm(Model model,
@@ -48,11 +44,16 @@ public class LoginController {
 		return ViewConstant.LOGIN;
 	}
 	
+//	@GetMapping("/")
+//	public String redirectLogin() {
+//		return "redirect:/login";
+//	}
+	
 	@GetMapping("/login/verificationcode")
 	public String askCode(@RequestParam(name="error", required=false) String error, Model model) {
 		model.addAttribute("authUser", this.getUser());
 		model.addAttribute("error", error);
-		return "verificationcode";
+		return ViewConstant.VERIFICATION_CODE;
 	}
 	
 	@GetMapping("/login/check2fail")
@@ -78,15 +79,22 @@ public class LoginController {
 	}
 	
 	private User getUser() {
-		User user = null;
-		
-		Object o = SecurityContextHolder.getContext().getAuthentication();
-		boolean auth = SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
-		boolean anonymous =  (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken); 
-		if (o != null && auth && !anonymous) {
-			user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		}
+		User user = authenticationFacade.getAuthenticatedUser();
+//		User user = null;
+//		
+//		Object o = SecurityContextHolder.getContext().getAuthentication();
+//		boolean auth = SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
+//		boolean anonymous =  (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken); 
+//		if (o != null && auth && !anonymous) {
+//			user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//		}
 		
 		return user;
+	}
+	
+	@GetMapping("/home")
+	public String goHomepage(Model model) {
+		model.addAttribute("authUser", authenticationFacade.getAuthenticatedUser());
+		return ViewConstant.HOME;
 	}
 }

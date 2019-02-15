@@ -4,7 +4,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +17,7 @@ import com.udemy.constant.ViewConstant;
 import com.udemy.entity.User;
 import com.udemy.model.ContactModel;
 import com.udemy.service.ContactService;
+import com.udemy.service.IAuthenticationFacade;
 
 @Controller
 @RequestMapping("/contacts")
@@ -29,6 +29,9 @@ public class ContactController {
 	@Qualifier("contactServiceImpl")
 	private ContactService contactService;
 	
+	@Autowired
+	private IAuthenticationFacade authenticationFacade;
+	
 	@GetMapping("/cancel")
 	public String cancel() {
 		return "redirect:/contacts/showcontacts";
@@ -37,7 +40,7 @@ public class ContactController {
 	@GetMapping("/showcontacts")
 	public ModelAndView showContacts() {
 		ModelAndView mav = new ModelAndView(ViewConstant.CONTACTS);
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User user = authenticationFacade.getAuthenticatedUser();
 		mav.addObject("user", user);
 		mav.addObject("contacts", contactService.listAllContacts());
 		return mav;

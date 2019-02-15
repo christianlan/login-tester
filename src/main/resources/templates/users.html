@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<title>Users</title>
+		
+		<!-- Bootstrap core CSS -->
+		<link rel="stylesheet"
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+		
+		<!-- Custom styles for this template -->
+		<link th:href="@{/css/style.css}" rel="stylesheet" />
+		
+	</head>
+	
+	<body>
+		<div class="container">
+			<div class="panel panel-default">
+				<div class="panel-heading"></div>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Username</th>
+							<th>Password</th>
+							<th>Enabled</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody th:each="user: ${users}">
+						<tr>
+							<td th:text="${user.getUsername()}"></td>
+							<td th:text="${user.getPassword()}"></td>
+							<td th:text="${user.isEnabled()}"></td>
+							<td> 
+								<a th:href="@{/users/userform?id=__${user.getUsername()}__}">
+									<button class="btn btn-default"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+								</a>
+								
+								<a th:href="@{/users/removeuser?id=__${user.getUsername()}__}">
+									<button class="btn btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+			<div th:if="${message}" class="alert alert-info" role="alert"><span th:text="${message}"></span></div>
+			
+			<a th:href="@{/login}" style="text-decoration: none">
+        		<button class="btn btn-lg btn-info btn-block" style="margin-top: 50px">Go to login</button>
+        	</a>
+		</div>
+	
+	</body>
+</html>

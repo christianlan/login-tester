@@ -15,23 +15,21 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.udemy.constant.ViewConstant;
 import com.udemy.entity.UserRole;
-import com.udemy.repository.UserRepository;
+import com.udemy.service.UserService2;
 
 @Service("userService")
 public class UserService implements UserDetailsService{
 
 	@Autowired
-	@Qualifier("userRepository")
-	private UserRepository ur;
+	@Qualifier("userService2Impl")
+	private UserService2 userService2;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		com.udemy.entity.User user = ur.findByUsername(username);
+		com.udemy.entity.User user = userService2.findUserByUsername(username);
 		List<GrantedAuthority> authorities = buildAuthorities(user.getUserRoles());
 		return buildUser(user, authorities);
 	}

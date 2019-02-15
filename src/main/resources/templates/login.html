@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 
-<title>Backend Ninja - Signin</title>
+<title>Signin</title>
 
 <!-- Bootstrap core CSS -->
 <link rel="stylesheet"
@@ -17,8 +17,14 @@
 
 <body>
 	<div class="container">
-		<p style="text-align: right; font-weight: bold" th:if="${authUser}">
+		<p th:if="${authUser}" style="text-align: right; font-weight: bold">
 			<span th:text="${authUser.getUsername()}"></span>
+		</p>
+		
+		<p style="text-align: right; font-weight: bold">
+			<a th:href="@{/home}" class="btn btn-primary">
+				<span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home
+			</a>
 		</p>
 
 		<form class="form-signin" th:action="@{/logincheck}" method="POST">
@@ -59,6 +65,8 @@
 			<button class="btn btn-lg btn-primary btn-block"
 				style="margin-top: 50px" type="submit">Registrarse</button>
 		</form>
+		
+		<a th:href="@{/users/showusers}" class="btn btn-info mgtop50 fontmedium">User list</a>
 	</div>
 </body>
 </html>

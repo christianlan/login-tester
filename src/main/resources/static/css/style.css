@@ -27,3 +27,12 @@ input[type=checkbox]
 .margin10 {
 	margin: 10px;
 }
+
+.mgtop50 {
+	margin-top: 50px;
+}
+
+.fontmedium {
+	font-weight: bold;
+	font-size: 16px;
+}

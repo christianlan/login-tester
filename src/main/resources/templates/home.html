@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8"/>
+
+    <title>Home page</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+
+  </head>
+
+  <body>
+  	<div class="container">
+		
+		<p th:if="${authUser}" style="text-align: right; font-weight: bold">
+			<span th:text="${authUser.getUsername()}"></span>
+			<a th:href="@{/logout}" class="btn btn-primary margin10">
+				<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout
+			</a>
+		</p>
+		
+		<p th:if="${authUser==null}">
+			<a th:href="@{/login}" class="btn btn-primary">
+				<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Login
+			</a>
+		</p>
+  	
+  		<h1>Welcome to here!</h1>
+  	</div>
+
+  </body>
+</html>

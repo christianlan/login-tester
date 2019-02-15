@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<title>User Form</title>
+		
+		<!-- Bootstrap core CSS -->
+		<link rel="stylesheet"
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+		
+		<!-- Custom styles for this template -->
+		<link th:href="@{/css/style.css}" rel="stylesheet" />
+		
+	</head>
+	
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-2"></div>
+				<div class="col-md-8">
+					<h1>User edition</h1>
+					<br>
+<!-- 					<form th:action="@{/users/edituser}" method="POST" th:object="${user}"> -->
+<!-- 						<div class="margin10"> -->
+<!-- 							<label>Username: </label>  -->
+<!-- 							<input type="text" class="form-control" th:field="*{username}" readonly/> -->
+<!-- 						</div> -->
+<!-- 						<div class="margin10"> -->
+<!-- 							<label>Password: </label>  -->
+<!-- 							<input type="text" class="form-control" th:field="*{password}" readonly/> -->
+<!-- 						</div> -->
+<!-- 						<div class="margin10"> -->
+<!-- 							<label>Enabled:&nbsp;&nbsp;&nbsp;</label>  -->
+<!-- 							<input type="checkbox" th:field="*{enabled}"/> -->
+<!-- 						</div> -->
+						
+<!-- 						<button class="btn btn-lg btn-primary" type="submit"> -->
+<!-- 							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Accept -->
+<!-- 						</button> -->
+<!-- 					</form> -->
+					
+					<form th:action="@{/users/edituser}" method="POST">
+						<div class="margin10">
+							<label>Username: </label> 
+							<input type="text" class="form-control" name="username" th:value="${username}" readonly/>
+						</div>
+						<div class="margin10">
+							<label>Password: </label> 
+							<input type="text" class="form-control" th:value="${password}" readonly/>
+						</div>
+						<div class="margin10">
+							<label>Enabled:&nbsp;&nbsp;&nbsp;</label> 
+							<input type="checkbox" name="enabled" th:checked="${enabled}"/>
+						</div>
+						
+						<button class="btn btn-lg btn-primary" type="submit">
+							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Accept
+						</button>
+					</form>
+					
+					<a th:href="@{/users/showusers}" class="btn btn-danger btn-lg mgtop50"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</a>
+				</div>
+				<div class="col-md-2"></div>
+			</div>
+		</div>
+	
+	</body>
+</html>

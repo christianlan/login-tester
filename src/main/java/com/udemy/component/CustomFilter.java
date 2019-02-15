@@ -13,13 +13,18 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jboss.aerogear.security.otp.Totp;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.udemy.entity.User;
+import com.udemy.service.IAuthenticationFacade;
 
 public class CustomFilter implements Filter {
 
 	private static final Log LOG = LogFactory.getLog(CustomFilter.class);
+	
+	@Autowired
+	private IAuthenticationFacade authenticationFacade;
 	
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

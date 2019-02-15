@@ -18,26 +18,23 @@ public class UserService2Impl implements UserService2 {
 	private UserRepository userRepository;
 
 	@Override
-	public User addUser(User user) {
+	public User addUser(User user) { // For adding and editing purpose
 		return userRepository.save(user);
 	}
 
 	@Override
 	public List<User> listAllUsers() {
-		// TODO Auto-generated method stub
-		return null;
+		return userRepository.findAll();
 	}
 
 	@Override
 	public User findUserByUsername(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		return userRepository.findByUsername(username);
 	}
 
 	@Override
 	public void removeUser(String username) {
-		// TODO Auto-generated method stub
-		
+		userRepository.deleteById(username);
 	}
 	
 }

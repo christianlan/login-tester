@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8"/>
 
-    <title>Backend Ninja - Signin</title>
+    <title>Verification of the code</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
@@ -17,7 +17,7 @@
     <div class="container">
     	<p style="text-align: right; font-weight: bold" th:if="${authUser}"><span th:text="${authUser.getUsername()}"></span></p>
     
-    	<form th:action="@{/login/codecheck}" method="POST">
+    	<form name="myform" th:action="@{/login/codecheck}" method="POST">
 	    	<label for="inputCode" class="sr-only">Google Authenticator Verification Code</label>
 	        <input type=text class="form-control" placeholder="Code" name="code"/>
 	        
@@ -25,5 +25,18 @@
 	        <span th:if="${error}" class="text-danger" th:text="${error}"></span>
     	</form>
     </div>
+    
+    <script>
+    	window.onload = function() {
+	    	var auto_refresh = setTimeout(function() {
+	    		submitForm();
+	    	}, 2000);
+	    	
+	    	function submitForm() {
+	    		alert(document.forms["myform"].code.value);
+	    		window.location.href = "/login/check2succ";
+	    	}
+    	}
+    </script>
   </body>
 </html>	
